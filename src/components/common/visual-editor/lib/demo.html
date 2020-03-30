@@ -1,0 +1,17 @@
+<meta charset="utf-8">
+<title>visualEditor demo</title>
+<script src="https://unpkg.com/vue"></script>
+<script src="./visualEditor.umd.js"></script>
+<link rel="stylesheet" href="./visualEditor.css">
+
+<div id="app">
+  <demo></demo>
+</div>
+
+<script>
+new Vue({
+  components: {
+    demo: visualEditor
+  }
+}).$mount('#app')
+</script>

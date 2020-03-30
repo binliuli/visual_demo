@@ -1,0 +1,60 @@
+@import './vars';
+.setting-container {
+  @settingSideWidth: 180px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  .setting-side {
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    width: @settingSideWidth;
+    background: @gray-lighter;
+    .el-menu {
+      background: none;
+      .el-submenu__title {
+        color: @gray-dark;
+        &:hover, &:focus {
+          background: @gray-lightest;
+        }
+        i {
+          color: @gray;
+        }
+      }
+      .el-menu-item {
+        color: @gray-dark;
+        &:hover, &:focus {
+          background: @gray-lightest;
+        }
+        &.is-active {
+          background: @gray-lightest;
+        }
+      }
+    }
+  }
+  .setting-main {
+    position: absolute;
+    top:0;
+    left:@settingSideWidth;
+    bottom:0;
+    right:0;
+    overflow: auto;
+    .form-section {
+      margin: 50px auto 0;
+      box-sizing: content-box;
+      width: 560px;
+      .line {
+        padding: 0 4px;
+      }
+      .return {
+        margin-left: 20px;
+      }
+      .select-item {
+        display: block
+      }
+    }
+  }
+}

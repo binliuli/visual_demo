@@ -1,0 +1,76 @@
+@import './vars';
+*{
+  padding: 0;
+  margin: 0;
+}
+a {
+  color: @mainColor;
+}
+
+a:hover {
+  color: @mainHiColor;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s !important;
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in below version 2.1.8 */
+
+  {
+  opacity: 0 !important;
+}
+
+.flow-enter-active,
+.flow-leave-active {
+  transition: all .5s !important;
+  transform: translate3d(0, 0px, -1px) !important;
+}
+
+.flow-enter {
+  opacity: 0 !important;
+  transform: translate3d(0, 10px, 0) !important;
+}
+
+.flow-leave {
+  transform: translate3d(0, 0px, -1px) !important;
+  opacity: 1 !important
+}
+
+.flow-leave-to {
+  opacity: 0 !important;
+  transform: translate3d(0, 0px, -1px) !important;
+  transform: translate3d(0, -10px, 0) !important;
+}
+
+.common-list-tab {
+  &.el-tabs--card .el-tabs__nav-scroll {
+    padding-top: 2px;
+  }
+  &.el-tabs--card>.el-tabs__header .el-tabs__nav {
+    // border-top: solid 3px #e4e7ed;
+    border-radius: 0;
+  }
+  &.el-tabs--card>.el-tabs__header .el-tabs__item {
+    color: lighten(@gray, 10);
+  }
+  &.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    border-bottom-color: @gray-lightest;
+    position: relative;
+    color: @gray-dark;
+    &:after {
+      position: absolute;
+      top: -3px;
+      left: 0;
+      right: 0;
+      bottom: 100%;
+      background: @orange;
+      content: '';
+      display: block;
+      border-radius: 3px 3px 0 0;
+    }
+  }
+}

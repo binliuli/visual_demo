@@ -1,0 +1,77 @@
+{
+  "_from": "git+ssh://git@192.168.1.236:framework/visual-editor.git",
+  "_id": "visual-editor@0.1.46",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/visual-editor",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "visual-editor@git+ssh://git@192.168.1.236:framework/visual-editor.git",
+    "name": "visual-editor",
+    "escapedName": "visual-editor",
+    "rawSpec": "git+ssh://git@192.168.1.236:framework/visual-editor.git",
+    "saveSpec": "git+ssh://git@192.168.1.236:framework/visual-editor.git",
+    "fetchSpec": "git@192.168.1.236:framework/visual-editor.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+ssh://git@192.168.1.236:framework/visual-editor.git#3f1319f92b9dc633a728d4c3afa162067b4a8a96",
+  "_spec": "visual-editor@git+ssh://git@192.168.1.236:framework/visual-editor.git",
+  "_where": "/Users/shixiaoyang/Desktop/workSpace/jinrong/aml-visual/src/main/vue/aml",
+  "bundleDependencies": false,
+  "dependencies": {
+    "color": "^3.1.0",
+    "d3": "^5.7.0",
+    "lodash": "^4.17.11",
+    "vue": "^2.5.21",
+    "zrender": "^4.0.5"
+  },
+  "deprecated": false,
+  "description": "## Project setup ``` yarn install ```",
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-e2e-nightwatch": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.0",
+    "@vue/cli-plugin-unit-mocha": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.1.2",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "gitbook-cli": "^2.3.2",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^4.0.1",
+    "jsdoc-vuejs": "^2.4.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "main": "lib/visualEditor.common.js",
+  "name": "visual-editor",
+  "private": true,
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name visualEditor --dest lib src/components/index.vue && cp public/worker.js lib/ && cp public/d3.js lib/ && git add . && git commit -m 'build latest package'",
+    "build:major": "npm run build && npm version major",
+    "build:minor": "npm run build && npm version minor",
+    "build:patch": "npm run build && npm version patch",
+    "docs:api": "jsdoc2md --configure ./jsdoc.json --files ./src/components/**/* > docs/api.md",
+    "docs:build": "npm run docs:prepare && npm run docs:api && gitbook build",
+    "docs:clean": "rimraf _book",
+    "docs:prepare": "gitbook install",
+    "docs:serve": "npm run docs:prepare && npm run docs:api && gitbook serve",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "version": "0.1.46"
+}

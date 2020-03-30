@@ -1,0 +1,16 @@
+{
+  "id": "1640057",
+  "name": "黑名单",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "一览",
+  "glyphs": [
+    {
+      "icon_id": "700799",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    }
+  ]
+}
