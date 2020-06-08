@@ -1,7 +1,7 @@
 <template>
   <div class="bar-main">
     <div class="layout-mode">
-      <p>布局模式</p>
+      <!-- <p>布局模式</p> -->
       <el-button @click="$emit('layout', 'force')" class="btn-img">
         <img src="~assets/images/visual/el-layoutForce.png" class="tool-img" title="力布局" />
         <span class="tool-text">弹性布局</span>
@@ -15,7 +15,7 @@
         <span class="tool-text">移动模式</span>
       </el-button>
     </div>
-    <div class="zoom-mode">
+    <!-- <div class="zoom-mode">
       <p>图谱缩放</p>
       <el-button @click="$emit('zoomchange','big')" class="btn-img">
         <img src="~assets/images/visual/el-bigger.png" class="tool-img" title="放大" />
@@ -29,12 +29,12 @@
         <img src="~assets/images/visual/el-normal.png" class="tool-img" title="还原" />
         <span class="tool-text">还原</span>
       </el-button>
-    </div>
-    <div class="base-mode">
+    </div>-->
+    <!-- <div class="base-mode">
       <p>基础功能</p>
-      <!-- <el-button class="btn-img">
+      <el-button class="btn-img">
             <img src="~assets/images/visual/el-cut.png" class="tool-img" title="截图">
-      </el-button>-->
+      </el-button>
       <el-button @click="$emit('savePic')" class="btn-img">
         <img src="~assets/images/visual/el-photo.png" class="tool-img" title="拍照" />
       </el-button>
@@ -50,7 +50,7 @@
       <el-button @click="$emit('modechange','link')" :type="mode=='link'?'primary':''" class="btn-img">
         <img src="~assets/images/visual/el-addLink.png" class="tool-img" title="添加关系" />
       </el-button>
-    </div>
+    </div>-->
   </div>
 </template>
 

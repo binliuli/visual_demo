@@ -1,9 +1,9 @@
 <template>
   <div class="visual">
     <right-menu :menuOriginData="menuOriginData" @rightMenuCallback="rightMenuCallback"></right-menu>
-    <div class="toolbar-wrapper">
+    <!-- <div class="toolbar-wrapper">
       <tool-bar :selected="selectedNodesCount" :selectedItems="selectedItems" :mode="mode" @lock="lock" @unlock="unlock" @undo="undo" @redo="redo" @save="saveVersion" @modechange="changeMode" @add="addPoint" @delete="deleteNodes" @layout="setLayout" @group="doGroup" @ungroup="doUnGroup" @play="playAnim" @stop="stopAnim" @highlight="highlight" @unhighlight="unhighlight" @linkstylechange="setLinksStyle" @nodestylechange="setNodesStyle" @filterCus="filterCus" @select="handleSelectActions"></tool-bar>
-    </div>
+    </div>-->
     <div class="tool-left">
       <ToolBarLeft :mode="mode" @modechange="changeMode" @zoomchange="zoomchange" @add="addPoint" @layout="setLayout" @play="playAnim" @stop="stopAnim" @savePic="savePicMethod" />
     </div>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import Draw from "./common/visual-editor/src/components/index";
 import ToolBarLeft from "./ToolBarLeft";
 import RightMenu from "./RightMenu/VisualMenu.vue";
@@ -78,103 +79,539 @@ export default {
     };
   },
   mounted() {
+    // 弹性布局
+    // setTimeout(() => {
+    //   this.setLayout("force");
+    // }, 1500);
+    // let dataAll = {
+    //   code: 200,
+    //   message: "成功",
+    //   data: {
+    //     nodes: [
+    //       {
+    //         model: {
+    //           id: 7,
+    //           name: "对私客户",
+    //           icon: "/icons/ower.png",
+    //           type: 0,
+    //           key: null
+    //         },
+    //         id: 55494,
+    //         properties: {
+    //           occupation: "1F",
+    //           organization_id: "00001",
+    //           name: "小赵",
+    //           id_card: "130229197701296639",
+    //           customer_id: "001157451966",
+    //           id_card_type: "11",
+    //           country_id: "CHN",
+    //           id_card_expiry_date: "20201020"
+    //         },
+    //         labels: ["对私客户", "关系人", "Customer"]
+    //       },
+    //       {
+    //         model: {
+    //           id: 6,
+    //           name: "对私账户",
+    //           icon: "/icons/bank.png",
+    //           type: 0,
+    //           key: null
+    //         },
+    //         id: 2482,
+    //         properties: {
+    //           name: "小李",
+    //           account_type: "6100",
+    //           customer_id: "001157451966",
+    //           account: "6229180005780020912"
+    //         },
+    //         labels: ["对私账户", "CustomerAccount", "Account"]
+    //       },
+    //       {
+    //         model: {
+    //           id: 6,
+    //           name: "对私账户",
+    //           icon: "/icons/bank.png",
+    //           type: 0,
+    //           key: null
+    //         },
+    //         id: 2678,
+    //         properties: {
+    //           name: "小王",
+    //           account_type: "6100",
+    //           customer_id: "001157451966",
+    //           account: "7236111219000005772"
+    //         },
+    //         labels: ["对私账户", "CustomerAccount", "Account"]
+    //       },
+    //       {
+    //         model: {
+    //           id: 1,
+    //           name: "他行账户",
+    //           icon: "/icons/bankArr.png",
+    //           type: 0,
+    //           key: null
+    //         },
+    //         id: 412853,
+    //         properties: {
+    //           pairing_customer_type: "",
+    //           name: "小华",
+    //           pairing_id_card_type: "",
+    //           pairing_id_card: "",
+    //           pairing_account: "6222080403006123395",
+    //           pairing_account_type: ""
+    //         },
+    //         labels: ["他行账户", "OutAccount", "Account"]
+    //       },
+    //       {
+    //         model: {
+    //           id: 1,
+    //           name: "他行账户",
+    //           icon: "/icons/bankArr.png",
+    //           type: 0,
+    //           key: null
+    //         },
+    //         id: 412854,
+    //         properties: {
+    //           pairing_customer_type: "",
+    //           name: "吕振华",
+    //           pairing_id_card_type: "",
+    //           pairing_id_card: "",
+    //           pairing_account: "6222080403006236353",
+    //           pairing_account_type: ""
+    //         },
+    //         labels: ["他行账户", "OutAccount", "Account"]
+    //       }
+    //     ],
+    //     links: [
+    //       {
+    //         name: "账户",
+    //         id: 517,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2482
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 259366,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "3000.000",
+    //           trade_date: "20180611",
+    //           num: "30"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 275805,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "2300.000",
+    //           trade_date: "20180601",
+    //           num: "23"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 296824,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "3300.000",
+    //           trade_date: "20180614",
+    //           num: "33"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 297062,
+    //         source: 2678,
+    //         properties: { amount: "100.000", trade_date: "20180531", num: "1" },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 299884,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "3000.000",
+    //           trade_date: "20180607",
+    //           num: "30"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 306313,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "2800.000",
+    //           trade_date: "20180528",
+    //           num: "28"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 317115,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "1800.000",
+    //           trade_date: "20180606",
+    //           num: "18"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 317769,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "2700.000",
+    //           trade_date: "20180615",
+    //           num: "27"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 318206,
+    //         source: 2678,
+    //         properties: { amount: "100.000", trade_date: "20180608", num: "1" },
+    //         target: 412854
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 326601,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "2100.000",
+    //           trade_date: "20180529",
+    //           num: "21"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 329337,
+    //         source: 412854,
+    //         properties: {
+    //           amount: "1500.000",
+    //           trade_date: "20180604",
+    //           num: "15"
+    //         },
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 330904,
+    //         source: 412853,
+    //         properties: { amount: "200.000", trade_date: "20180607", num: "2" },
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 332926,
+    //         source: 412854,
+    //         properties: {
+    //           amount: "1500.000",
+    //           trade_date: "20180613",
+    //           num: "15"
+    //         },
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 344730,
+    //         source: 412853,
+    //         properties: { amount: "100.000", trade_date: "20180611", num: "1" },
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 345634,
+    //         source: 2678,
+    //         properties: { amount: "100.000", trade_date: "20180524", num: "1" },
+    //         target: 412854
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 368602,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "2300.000",
+    //           trade_date: "20180604",
+    //           num: "23"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 375833,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "3000.000",
+    //           trade_date: "20180530",
+    //           num: "30"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 378531,
+    //         source: 2678,
+    //         properties: { amount: "100.000", trade_date: "20180528", num: "1" },
+    //         target: 412854
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 394277,
+    //         source: 2678,
+    //         properties: {
+    //           amount: "2000.000",
+    //           trade_date: "20180608",
+    //           num: "20"
+    //         },
+    //         target: 412853
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 397743,
+    //         source: 2678,
+    //         properties: { amount: "100.000", trade_date: "20180615", num: "1" },
+    //         target: 412854
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 397912,
+    //         source: 2678,
+    //         properties: { amount: "100.000", trade_date: "20180529", num: "1" },
+    //         target: 412854
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 401157,
+    //         source: 412854,
+    //         properties: {
+    //           amount: "1700.000",
+    //           trade_date: "20180615",
+    //           num: "17"
+    //         },
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "账户",
+    //         id: 713,
+    //         source: 55494,
+    //         properties: {},
+    //         target: 2678
+    //       },
+    //       {
+    //         name: "转账",
+    //         id: 401894,
+    //         source: 412854,
+    //         properties: {
+    //           amount: "1200.000",
+    //           trade_date: "20180529",
+    //           num: "12"
+    //         },
+    //         target: 2678
+    //       }
+    //     ]
+    //   }
+    // };
+
     let dataAll = {
       code: 200,
       message: "成功",
       data: {
         nodes: [
           {
-            model: {
-              id: 7,
-              name: "对私客户",
-              icon: "/icons/ower.png",
-              type: 0,
-              key: null
-            },
-            id: 55494,
-            properties: {
-              occupation: "1F",
-              organization_id: "00001",
-              name: "王丙龙",
-              id_card: "130229197701296639",
-              customer_id: "001157451966",
-              id_card_type: "11",
-              country_id: "CHN",
-              id_card_expiry_date: "20201020"
-            },
-            labels: ["对私客户", "关系人", "Customer"]
+            icon: "/icons/ower.png",
+            name: "小赵",
+            id: 55494
           },
           {
-            model: {
-              id: 6,
-              name: "对私账户",
-              icon: "/icons/bank.png",
-              type: 0,
-              key: null
-            },
+            icon: "/icons/bank.png",
             id: 2482,
-            properties: {
-              name: "王丙龙",
-              account_type: "6100",
-              customer_id: "001157451966",
-              account: "6229180005780020912"
-            },
-            labels: ["对私账户", "CustomerAccount", "Account"]
+            name: "小李"
           },
           {
-            model: {
-              id: 6,
-              name: "对私账户",
-              icon: "/icons/bank.png",
-              type: 0,
-              key: null
-            },
+            icon: "/icons/bank.png",
             id: 2678,
-            properties: {
-              name: "王丙龙",
-              account_type: "6100",
-              customer_id: "001157451966",
-              account: "7236111219000005772"
-            },
-            labels: ["对私账户", "CustomerAccount", "Account"]
+            name: "小王"
           },
           {
-            model: {
-              id: 1,
-              name: "他行账户",
-              icon: "/icons/bankArr.png",
-              type: 0,
-              key: null
-            },
+            icon: "/icons/bankArr.png",
             id: 412853,
-            properties: {
-              pairing_customer_type: "",
-              name: "吕振华",
-              pairing_id_card_type: "",
-              pairing_id_card: "",
-              pairing_account: "6222080403006123395",
-              pairing_account_type: ""
-            },
-            labels: ["他行账户", "OutAccount", "Account"]
+            name: "小华"
           },
           {
-            model: {
-              id: 1,
-              name: "他行账户",
-              icon: "/icons/bankArr.png",
-              type: 0,
-              key: null
-            },
+            icon: "/icons/bankArr.png",
             id: 412854,
-            properties: {
-              pairing_customer_type: "",
-              name: "吕振华",
-              pairing_id_card_type: "",
-              pairing_id_card: "",
-              pairing_account: "6222080403006236353",
-              pairing_account_type: ""
-            },
-            labels: ["他行账户", "OutAccount", "Account"]
+            name: "吕振华"
           }
         ],
         links: [
@@ -582,7 +1019,9 @@ export default {
     this.graphData = this.nomalVisualDataFunc(visualdata);
     console.log(this.graphData, "666666");
     if (this.graphData) {
-      this.$refs.draw.setData(this.graphData);
+      // this.$refs.draw.setData(this.graphData);
+      // 深圳招商 箭头问题
+      this.$refs.draw.setDisplayData(this.graphData);
     }
   },
   methods: {
@@ -627,12 +1066,35 @@ export default {
         // console.log(this.selectedItems.links)
       }
       if (e.type === "关联查询") {
-        const relatedData = await this.$axios.post(
-          this.$api.tool_api + "/neofj/nodes/path",
-          {
-            nodes: this.selectedIdsArray
+        console.log("关联查询", this.selectedIdsArray);
+        // const relatedData = await this.$axios.post(
+        //   this.$api.tool_api + "http://192.168.1.174:8083/neofj/nodes/path",
+        //   {
+        //     nodes: this.selectedIdsArray
+        //   }
+        // );
+        const relatedData = {
+          code: 200,
+          message: "成功",
+          data: {
+            nodes: [
+              {
+                icon: "/icons/ower.png",
+                id: 1234,
+                name: "三哥"
+              }
+            ],
+            links: [
+              {
+                name: "账户",
+                id: 4576,
+                source: 2482,
+                properties: {},
+                target: 1234
+              }
+            ]
           }
-        );
+        };
         const newrelatedData = this.nomalVisualDataFunc(relatedData.data);
         const nodes = _.get(e, "sendData.origindata.nodes") || [];
         this.$refs.draw.addDataSet(newrelatedData, nodes);
@@ -924,24 +1386,42 @@ export default {
         nodes: [],
         links: []
       };
-      this.AllStatisticsData.data = [];
-      var personNum = 0; // 实体类型-人员
-      var companyNum = 0; // 实体类型-公司
-      var accountNum = 0; // 实体类型-账户
-      var transferNUm = 0; // 资金总额-人民币
-      var bankCustom = 0; // 本行客户
-      var firstEntityNum = 0; // 定位统计-实体个数（统计一级关系内实体个数）
+      // this.AllStatisticsData.data = [];
+      // var personNum = 0; // 实体类型-人员
+      // var companyNum = 0; // 实体类型-公司
+      // var accountNum = 0; // 实体类型-账户
+      // var transferNUm = 0; // 资金总额-人民币
+      // var bankCustom = 0; // 本行客户
+      // var firstEntityNum = 0; // 定位统计-实体个数（统计一级关系内实体个数）
+      // visualdata.nodes.forEach(el => {
+      //   const type = el.labels[0];
+      //   var iconUrl = "";
+      //   const sigleNode = {
+      //     id: el.id,
+      //     name: el.properties.name,
+      //     labels: el.labels,
+      //     properties: el.properties,
+      //     model: {
+      //       label: el.labels[0],
+      //       icon: el.model.icon
+      //     },
+      //     isSelected: false
+      //   };
+      //   normalgraphData.nodes.push(sigleNode);
+      // });
+      // normalgraphData.links = visualdata.links;
+
       visualdata.nodes.forEach(el => {
-        const type = el.labels[0];
+        // const type = el.labels[0];
         var iconUrl = "";
         const sigleNode = {
           id: el.id,
-          name: el.properties.name,
-          labels: el.labels,
-          properties: el.properties,
+          name: el.name,
+          // labels: el.labels,
+          // properties: el.properties,
           model: {
-            label: el.labels[0],
-            icon: el.model.icon
+            // label: el.labels[0],
+            icon: el.icon
           },
           isSelected: false
         };
@@ -949,72 +1429,72 @@ export default {
       });
       normalgraphData.links = visualdata.links;
 
-      visualdata.links.forEach(el => {
-        const amountNum =
-          Math.floor(parseFloat(el.properties.amount) * 100) / 100;
-        if (el.name == "转账") {
-          transferNUm += amountNum;
-        }
-      });
+      // visualdata.links.forEach(el => {
+      //   const amountNum =
+      //     Math.floor(parseFloat(el.properties.amount) * 100) / 100;
+      //   if (el.name == "转账") {
+      //     transferNUm += amountNum;
+      //   }
+      // });
 
-      const globalSingle = {
-        // 全局统计--实体类型
-        title: "实体类型",
-        data: [
-          {
-            name: "人员",
-            value: personNum
-          },
-          {
-            name: "公司",
-            value: companyNum
-          },
-          {
-            name: "账户",
-            value: accountNum
-          }
-        ]
-      };
-      const moneySingle = {
-        // 全局统计--交易笔数
-        title: "交易笔数",
-        data: [
-          {
-            name: "笔数",
-            value: normalgraphData.links.length
-          }
-        ]
-      };
-      const transferSingle = {
-        // 全局统计--资金总额
-        title: "资金总额",
-        data: [
-          {
-            name: "人民币",
-            value: transferNUm + "¥"
-          },
-          {
-            name: "美元",
-            value: Math.floor((transferNUm / 7.0398) * 100) / 100 + "$"
-          }
-        ]
-      };
-      const bankSingle = {
-        // 全局统计--本行客户
-        title: "本行客户",
-        data: [
-          {
-            name: "数量",
-            value: bankCustom
-          }
-        ]
-      };
-      this.AllStatisticsData.data.push(
-        globalSingle,
-        moneySingle,
-        transferSingle,
-        bankSingle
-      );
+      // const globalSingle = {
+      //   // 全局统计--实体类型
+      //   title: "实体类型",
+      //   data: [
+      //     {
+      //       name: "人员",
+      //       value: personNum
+      //     },
+      //     {
+      //       name: "公司",
+      //       value: companyNum
+      //     },
+      //     {
+      //       name: "账户",
+      //       value: accountNum
+      //     }
+      //   ]
+      // };
+      // const moneySingle = {
+      //   // 全局统计--交易笔数
+      //   title: "交易笔数",
+      //   data: [
+      //     {
+      //       name: "笔数",
+      //       value: normalgraphData.links.length
+      //     }
+      //   ]
+      // };
+      // const transferSingle = {
+      //   // 全局统计--资金总额
+      //   title: "资金总额",
+      //   data: [
+      //     {
+      //       name: "人民币",
+      //       value: transferNUm + "¥"
+      //     },
+      //     {
+      //       name: "美元",
+      //       value: Math.floor((transferNUm / 7.0398) * 100) / 100 + "$"
+      //     }
+      //   ]
+      // };
+      // const bankSingle = {
+      //   // 全局统计--本行客户
+      //   title: "本行客户",
+      //   data: [
+      //     {
+      //       name: "数量",
+      //       value: bankCustom
+      //     }
+      //   ]
+      // };
+      // this.AllStatisticsData.data.push(
+      //   globalSingle,
+      //   moneySingle,
+      //   transferSingle,
+      //   bankSingle
+      // );
 
       console.log(normalgraphData, "normalgraphData");
       return normalgraphData;
@@ -1095,11 +1575,11 @@ export default {
         }
       }
       const root = [];
-      nodes.forEach(el => {
-        if (root.indexOf(el.labels[0]) === -1) {
-          root.push(el.labels[0]);
-        }
-      });
+      // nodes.forEach(el => {
+      //   if (root.indexOf(el.labels[0]) === -1) {
+      //     root.push(el.labels[0]);
+      //   }
+      // });
       const resultdata = [];
       root.forEach((el, i) => {
         resultdata.push({
